@@ -88,22 +88,38 @@ describe("GET /hotels", () => {
       const ticketType = await createTicketTypeWithHotel();
       const ticket = await createTicket(enrollment.id, ticketType.id, TicketStatus.PAID);
       const payment = await createPayment(ticket.id, ticketType.price);
-
+    
       const createdHotel = await createHotel();
 
-      const response = await server.get("/hotels").set("Authorization", `Bearer ${token}`);
+      const createdRoom = await createRoomWithHotelId(createdHotel.id);
 
+      const booking = await createBooking({
+        userId: user.id,
+        roomId: createdRoom.id,
+      });
+
+      const response = await server.get("/hotels").set("Authorization", `Bearer ${token}`);
       expect(response.status).toEqual(httpStatus.OK);
 
-      expect(response.body).toEqual([
-        {
-          id: createdHotel.id,
-          name: createdHotel.name,
-          image: createdHotel.image,
-          createdAt: createdHotel.createdAt.toISOString(),
-          updatedAt: createdHotel.updatedAt.toISOString()
-        }
-      ]);
+      expect(response.body).toEqual([{
+        id: createdHotel.id,
+        name: createdHotel.name,
+        image: createdHotel.image,
+        createdAt: createdHotel.createdAt.toISOString(),
+        updatedAt: createdHotel.updatedAt.toISOString(),
+        Rooms: [{
+          id: createdRoom.id,
+          name: createdRoom.name,
+          capacity: createdRoom.capacity,
+          hotelId: createdHotel.id,
+          createdAt: createdRoom.createdAt.toISOString(),
+          updatedAt: createdRoom.updatedAt.toISOString(),
+          Booking: [{
+            id: booking.id,
+            roomId: booking.roomId
+          }]
+        }]
+      }]);
     });
 
     it("should respond with status 200 and an empty array", async () => {
