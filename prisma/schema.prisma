@@ -163,6 +163,7 @@ model EventDays {
   createdAt  DateTime     @default(now()) @db.Timestamptz(6)
   updatedAt  DateTime?    @db.Timestamptz(6)
   Activities Activities[]
+  @@index([date])
 }
 
 model Locations {

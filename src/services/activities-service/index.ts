@@ -13,11 +13,15 @@ async function getEventDays(userId: number) {
 
   const ticket = await ticketRepository.findTicketByEnrollmentId(enrollment.id);
 
-  if(!ticket || ticket.status === "RESERVED" || ticket.TicketType.isRemote) {
+  if(!ticket) {
     throw cannotListActivitiesError();
   }
 
   const eventDays = await activityRepository.findEventDays();
+
+  if (eventDays.length === 0) {
+    throw notFoundError();
+  }
 
   return eventDays;
 }
