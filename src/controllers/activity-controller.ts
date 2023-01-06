@@ -17,3 +17,16 @@ export async function getEventDays(req: AuthenticatedRequest, res: Response) {
     return res.sendStatus(httpStatus.BAD_REQUEST);
   }
 }
+
+export async function getEvents(req: AuthenticatedRequest, res: Response) {
+  const { userId } = req;
+  const eventDayId = Number(req.query.eventDayId);
+
+  try {
+    const events = await activityService.getEvents(Number(userId), eventDayId);
+
+    return res.status(httpStatus.OK).send(events);
+  } catch (error) {
+    return res.sendStatus(httpStatus.NOT_FOUND);
+  }
+}
