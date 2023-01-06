@@ -48,7 +48,8 @@ async function getAccessToken(code: string) {
   };
 
   const response = await axios.post("https://github.com/login/oauth/access_token", body);
-  const token = response.data.access_token;
+
+  const token = response.data.split("&")[0].split("=")[1];
 
   return token;
 }
