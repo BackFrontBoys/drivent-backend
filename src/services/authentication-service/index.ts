@@ -21,6 +21,24 @@ async function signIn(params: SignInParams): Promise<SignInResult> {
   };
 }
 
+async function githubSignIn(email: string): Promise<SignInResult> {
+  const repoUser = await userRepository.findByEmail(email);
+
+  if (!repoUser) {
+    const password = (Math.random() + 1).toString(36).substring(20);
+    await userRepository.create({ email, password });
+  }
+
+  const user = await userRepository.findByEmail(email);
+
+  const token = await createSession(user.id);
+
+  return {
+    user: exclude(user, "password"),
+    token,
+  };
+}
+
 async function getUserOrFail(email: string): Promise<GetUserOrFailResult> {
   const user = await userRepository.findByEmail(email, { id: true, email: true, password: true });
   if (!user) throw invalidCredentialsError();
@@ -54,6 +72,7 @@ type GetUserOrFailResult = Pick<User, "id" | "email" | "password">;
 
 const authenticationService = {
   signIn,
+  githubSignIn
 };
 
 export default authenticationService;
