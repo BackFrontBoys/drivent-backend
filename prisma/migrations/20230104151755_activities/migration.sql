@@ -27,7 +27,7 @@ CREATE TABLE "ActivitiesBooking" (
 -- CreateTable
 CREATE TABLE "EventDays" (
     "id" SERIAL NOT NULL,
-    "date" DATE NOT NULL,
+    "date" TIMESTAMPTZ(6) NOT NULL,
     "createdAt" TIMESTAMPTZ(6) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "updatedAt" TIMESTAMPTZ(6),
 
