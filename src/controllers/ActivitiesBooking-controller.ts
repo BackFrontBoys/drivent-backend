@@ -18,5 +18,8 @@ export async function bookingActivity(req: AuthenticatedRequest, res: Response) 
     if(error.name === "ConflictError") {
       return res.sendStatus(httpStatus.CONFLICT);
     }
+    if(error.name === "BAD REQUEST") {
+      return res.sendStatus(httpStatus.CONFLICT);
+    }
   }
 }

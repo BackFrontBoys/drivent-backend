@@ -21,6 +21,12 @@ async function createActivitiesBooking(userId: number, activityId: number) {
     throw notFoundError();
   }
 
+  const activityBooking = await activityBookingRepository.listActivityBookingByActivityId(activityId);
+  const vagas = Number(activity.maxQuantity) - Number(activityBooking.length );
+  if(vagas < 1) {
+    throw { name: "BAD REQUEST" };
+  }
+
   const userBooking = await activityBookingRepository.findActivitiesBooking(userId, activityId);
 
   if (userBooking) {
