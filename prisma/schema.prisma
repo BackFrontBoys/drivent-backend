@@ -142,8 +142,8 @@ model Activities {
   locationId        Int?
   createdAt         DateTime            @default(now()) @db.Timestamptz(6)
   updatedAt         DateTime?           @db.Timestamptz(6)
-  EventDays         EventDays?          @relation(fields: [eventDayId], references: [id], onDelete: NoAction, onUpdate: NoAction)
-  Locations         Locations?          @relation(fields: [locationId], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  EventDays         EventDays?          @relation(fields: [eventDayId], references: [id] )
+  Locations         Locations?          @relation(fields: [locationId], references: [id])
   ActivitiesBooking ActivitiesBooking[]
 }
 
@@ -153,8 +153,8 @@ model ActivitiesBooking {
   activitiesId Int?
   createdAt    DateTime    @default(now()) @db.Timestamptz(6)
   updatedAt    DateTime?   @db.Timestamptz(6)
-  Activities   Activities? @relation(fields: [activitiesId], references: [id], onDelete: NoAction, onUpdate: NoAction)
-  User         User?       @relation(fields: [userId], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  Activities   Activities? @relation(fields: [activitiesId], references: [id])
+  User         User?       @relation(fields: [userId], references: [id])
 }
 
 model EventDays {
