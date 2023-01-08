@@ -5,7 +5,7 @@ import { getEventDays, getEvents } from "@/controllers";
 const activitiesRouter = Router();
 
 activitiesRouter
-  .all("/*", authenticateToken)
+  // .all("/*", authenticateToken)
   .get("/", getEventDays)
   .get("/events", getEvents);
 

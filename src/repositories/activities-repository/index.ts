@@ -5,27 +5,14 @@ async function findEventDays() {
 }
 
 async function findEventsByEventsDayId(eventDayId: number) {
-  console.log(eventDayId);
-  return prisma.activities.findMany({
-    where: {
-      eventDayId: eventDayId,
-    },
+  return prisma.locations.findMany({
     include: {
-      ActivitiesBooking: {
-        select: {
-          id: true,
-          activitiesId: true,
-          userId: true,
+      Activities: {
+        where: {
+          eventDayId
         },
       },
-
-      Locations: {
-        select: {
-          id: true,
-          name: true,
-        },
-      },
-    },
+    }
   });
 }
 
