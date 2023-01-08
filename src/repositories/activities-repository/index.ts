@@ -11,6 +11,14 @@ async function findEventsByEventsDayId(eventDayId: number) {
         where: {
           eventDayId
         },
+        include: {
+          ActivitiesBooking: {
+            select: {
+              id: true,
+              userId: true
+            }
+          }
+        }
       },
     }
   });
