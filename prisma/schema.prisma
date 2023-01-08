@@ -159,7 +159,7 @@ model ActivitiesBooking {
 
 model EventDays {
   id         Int          @id @default(autoincrement())
-  date       DateTime     @unique @db.Date
+  date       DateTime     @unique @db.Timestamptz(6)
   createdAt  DateTime     @default(now()) @db.Timestamptz(6)
   updatedAt  DateTime?    @db.Timestamptz(6)
   Activities Activities[]
