@@ -26,10 +26,19 @@ async function createActivityBooking(userId: number, activitiesId: number) {
   });
 }
 
+async function listActivityBookingByActivityId(id: number) {
+  return prisma.activitiesBooking.findMany({
+    where: {
+      activitiesId: id
+    }
+  });
+}
+
 const activityBookingRepository = {
   findActivitiesById,
   findActivitiesBooking,
-  createActivityBooking
+  createActivityBooking,
+  listActivityBookingByActivityId
 
 };
 
