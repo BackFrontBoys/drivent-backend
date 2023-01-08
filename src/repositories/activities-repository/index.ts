@@ -5,7 +5,6 @@ async function findEventDays() {
 }
 
 async function findEventsByEventsDayId(eventDayId: number) {
-  console.log(eventDayId);
   return prisma.activities.findMany({
     where: {
       eventDayId: eventDayId,
