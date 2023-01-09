@@ -39,7 +39,6 @@ async function getEvents(userId: number, eventDayId: number) {
   }
 
   const events = await activityRepository.findEventsByEventsDayId(eventDayId);
-
   if (!events || events.length === 0) {
     throw notFoundError();
   }

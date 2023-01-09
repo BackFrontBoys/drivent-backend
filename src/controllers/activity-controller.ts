@@ -20,7 +20,6 @@ export async function getEventDays(req: AuthenticatedRequest, res: Response) {
 
 export async function getEvents(req: AuthenticatedRequest, res: Response) {
   const { userId } = req;
-  //const userId = 130;
   const eventDayId = Number(req.query.eventDayId);
 
   try {
