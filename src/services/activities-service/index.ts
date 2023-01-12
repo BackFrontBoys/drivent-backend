@@ -3,13 +3,9 @@ import ticketRepository from "@/repositories/ticket-repository";
 import { notFoundError } from "@/errors";
 import { cannotListActivitiesError } from "@/errors/cannot-list-activities";
 import activityRepository from "@/repositories/activities-repository";
-//import { createClient } from "redis";
 import { redisClient } from "../../utils/redis-service";
 
 async function getEventDays(userId: number) {
-  /* const redisClient = createClient();
-  await redisClient.connect(); */
-
   const enrollment = await enrollmentRepository.findWithAddressByUserId(userId);
 
   if (!enrollment) {
