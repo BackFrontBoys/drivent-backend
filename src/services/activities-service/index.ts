@@ -51,6 +51,18 @@ async function getEvents(userId: number, eventDayId: number) {
     throw notFoundError();
   }
 
+  if (await redisClient.exists("eventsday")) {
+    const cache = await redisClient.get("eventsday");
+    if(events === JSON.parse(cache)) {
+      return JSON.parse(cache);
+    }
+    await redisClient.set("eventsday", JSON.stringify(events));
+    const cacheSub = await redisClient.get("eventsday");
+    return JSON.parse(cacheSub);
+  }
+
+  await redisClient.set("eventsday", JSON.stringify(events));
+
   return events;
 }
 
