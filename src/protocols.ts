@@ -30,3 +30,8 @@ export type RequestError = {
   name: string,
   message: string,
 };
+
+export type eventDayType = {
+  id: number,
+  result: typeof Array[],    
+}

@@ -40,6 +40,7 @@ async function createActivitiesBooking(userId: number, activityId: number) {
 
   const booking = await activityBookingRepository.createActivityBooking(userId, activityId);
   await redisClient.set(`activitiesBooking-${userId}-${activityId}`, JSON.stringify(booking));
+  await redisClient.del("eventsday");
   return booking;
 }
 
