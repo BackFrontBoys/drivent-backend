@@ -46,22 +46,29 @@ async function getEvents(userId: number, eventDayId: number) {
     throw notFoundError();
   }
 
+  if (await redisClient.exists("eventsday")) {
+    const cache = await redisClient.get("eventsday");
+    const array = JSON.parse(cache);
+    const eventDay = array.filter((value: any) => value.id === eventDayId);
+    
+    return eventDay[0].result;
+  }
+
+  const eventDay = await activityRepository.findEventDays();
+  const eventDayIds = eventDay.map(value => value.id);
+
+  const activities = await Promise.all(eventDayIds.map(async (value) =>  {
+    const result = await activityRepository.findEventsByEventsDayId(value);
+    return { id: value, result };
+  }
+  ));
+
   const events = await activityRepository.findEventsByEventsDayId(eventDayId);
   if (!events || events.length === 0) {
     throw notFoundError();
   }
 
-  if (await redisClient.exists("eventsday")) {
-    const cache = await redisClient.get("eventsday");
-    if(events === JSON.parse(cache)) {
-      return JSON.parse(cache);
-    }
-    await redisClient.set("eventsday", JSON.stringify(events));
-    const cacheSub = await redisClient.get("eventsday");
-    return JSON.parse(cacheSub);
-  }
-
-  await redisClient.set("eventsday", JSON.stringify(events));
+  await redisClient.set("eventsday", JSON.stringify(activities));
 
   return events;
 }
